@@ -6,7 +6,7 @@
 
 int main() {
     char *in = malloc(BUFSIZE);
-    char *out = malloc(BUFSIZE * 5);
+    char *out = malloc(BUFSIZE);
     FILE *_f;
     _f = fopen("data/data_1.bin", "rb");
     if (_f == NULL) {
