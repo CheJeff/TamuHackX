@@ -31,16 +31,17 @@ FullRep svnToFullRep(int n) {
     // The integer is only 17 bits so we can start at the 12-16 block (17 is sign so we ignore it).
     char bits = 0;
     char neg = n >> 31;
-    for (int i = 16; i >= 0; --i) {
-        if ((n & (1 << i) >> (i - 1)) ^ neg) {
+    for (int i = 16; i > 0; --i) {
+        if ((((n & (1 << (i - 1))) >> (i - 1)) ^ neg) & 1) {
             bits = i;
             break;
         }
     }
     // TODO: make not ugly
-    printf("bits: %d\n", bits);
+    printf("bits: %d, neg: %d, exp: %d\n", bits, neg, ((n & (1 << (16 - 1))) >> (16 - 1)) ^ neg);
     FullRep r = { bits > 12, (n >> 13) & 0xf, bits > 8, (n >> 9) & 0xf, bits > 4, (n >> 5) & 0xf, 0, n & 0x1f, 0, (bits > 12) * 5 + (bits > 8) * 5 + (bits > 4) * 5 + 6 };
     printf("%d %d %d %d %d %d %d %d\n", r.leader_1, r.data_1, r.leader_2, r.data_2, r.leader_3, r.data_3, r.leader_4, r.data_4);
+    printf("rep bits: %d\n", r.bits);
     return r;
 }
 
